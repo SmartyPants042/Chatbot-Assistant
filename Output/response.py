@@ -6,6 +6,7 @@ from Output.basic_response import basic_response
 
 def response(intent, importance_threshold=0):
     """
+    Gives the generic, built in response.
     input:
         intent:
             the intent object which we have to respond
@@ -24,6 +25,7 @@ def response(intent, importance_threshold=0):
         basic_response(intent.name)
         return
 
+    # if the intent is important    
     if intent.importance >= importance_threshold:
         # confirm with user
         user_sure = ask_sure(intent)
@@ -35,5 +37,4 @@ def response(intent, importance_threshold=0):
             intent.cancelled = True
             basic_response('basic_deny')
     
-    # else, the intent is not THAT important
     return

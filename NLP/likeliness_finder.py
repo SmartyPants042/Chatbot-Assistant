@@ -16,6 +16,7 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
             of any trigger string in the intent with the user's input.
             * 0 represents that even if the NONE of the trigger words
             are activated, we will still consider our input as our intent.
+            More about this in intent_finder.
             Q: So then, what's the use of zero? 
             A: Note that it will still fill in the param values it finds.
             These param values are extracted from the user input.
@@ -34,15 +35,17 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
 
     NOTE: 
         THIS IS A RECURSIVE FUNCTION
-        How? this function is called from intent_finder, 
+        How? this function is called from intent_scorer, 
         with the hopes of getting the score. We calculate the score and 
-        
-        we FILL in the VALUES (FOR NOW, FUTURE ATTENTION IS NEEDED).
+        we fill in the pre-filled parameter values.    
 
-        Now, to fill in each of the parameters speparately, 
-        we ask the user for input (as handled by the 'ask' function.)
-        THEN, we validate using the likeliness finder. Only then can we 
-        return each filled parameter's values. Now, we fill em one by one. 
+        This function is called again, to fill in the uniflled-parameter
+        values. This represents the 'base case' of this function.
+        So, to fill in each of the parameters speparately, 
+        we have asked the user for input (as handled by the 'ask' function.)
+        Now, we validate using the likeliness finder. Only then can we 
+        return each filled parameter's values. In this base case, 
+        we fill em one by one. 
     """
 
     #################### SETTING UP THE BASIC NLP TOOLS ####################
@@ -50,6 +53,8 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
     # NLP TASK 0: TOKENIZATION, REMOVING PUNCTUATION AND CASING
     word_tokens = nltk.tokenize.word_tokenize(user_input)
     tokenized_words = [word.lower() for word in word_tokens if word.isalnum()]
+
+    # print("tokens: ", tokenized_words)
 
     # NLP TASK 1: REMOVING STOP WORDS
     # TIME COMPLEXITY O(N*M): 
@@ -62,10 +67,10 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
     ]
 
     #################### BASE CASE OF THIS FUNCTION #####################
-    # Picks what to store
+    # Picks what to store in the parameter values.
     # IMMEDIATE WORK NEEDED. 
     # THIS IS THE LAST STAGE OF THE BOT RESPONSE,
-    # BEFORE USER INPUTS OTHER shit.
+    # before it goes on to the next main loop iteration.
     if param:
         return user_input
 
@@ -95,9 +100,9 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
             if word in filtered_words:
                 temp_num_triggers += 1
         
-        # all the trigger words of the trigger string
-        # have been satisfied. We have found the intent we are
-        # looking for. Done.
+        # the trigger words of the trigger string
+        # have been satisfied according to the threshold.
+        # We have found the intent we are looking for. Done.
         if temp_num_triggers/num_triggers >= trigger_threshold:
             flag = True
             score += 1
@@ -113,6 +118,8 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
     # pass for now
     # returns the score for determining 
     # whether this intent should be filled or not
+
+    print("filter: ", filtered_words)
 
     return score
 

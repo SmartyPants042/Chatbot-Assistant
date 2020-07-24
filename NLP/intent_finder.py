@@ -3,16 +3,10 @@ from Input import intents
 from NLP.likeliness_finder import likeliness_finder
 from NLP.intent_filler import intent_filler
 
-# bruteforce method of finding intent
-# we iterate through all the intents, 
-# creating one single object for each one.
-# once the intent is executed, we reset it
-
-# NOTE: THRESHOLD OF SCORES IS 0 (FOR NOW)
-
+# NOTE: THRESHOLD OF SCORES IS >0 (FOR NOW)
 def intent_finder(user_input, threshold=0, super_intent=None):
     """
-    Returns the best intent (if it finds one) WITH the filled values
+    Finds the best intent (if there is) WITH the filled values
     (ALL: prefilled + newly-asked).
     Simultaneously resets the parameters all the other intents.
 
@@ -29,9 +23,9 @@ def intent_finder(user_input, threshold=0, super_intent=None):
         super_intent:
             when we ask user for confirmation on important intents,
             we'll have intent checking for agree/deny, with the super
-            intent as the intent we are confirming for.
+            intent as the intent that we are confirming for.
     return: 
-        the best intent with the score above threshold
+        the best intent with the maximum score above threshold
     """
 
     #################### FINDING THE INTENTS AND SCORES ####################
@@ -44,7 +38,9 @@ def intent_finder(user_input, threshold=0, super_intent=None):
         intent_resetter()
         return None
 
+    #################### FILLING IN THE INTENT PARAMETERS ####################
     # Find the first fully fleshed intent
+    # We iterate through the sorted list of socred intents.
     # FUTURE WORK: FIGURE OUT WHY THE USER KILLED THIS INTENT
     # USING STATISTICAL METHODS
     intent_filling_success = intent_filler(scored_intents[0][1])
@@ -62,15 +58,27 @@ def intent_finder(user_input, threshold=0, super_intent=None):
     else:
         best_intent = None    
     
-    # resetting intents accordingly
+    #################### RESET UNSUCCESSFUL INTENTS ####################
     intent_resetter(best_intent, super_intent)
     
-    # Returns the fully filled intent params
+    #################### RETURN FULLY FILLED BEST INTENT ####################
     return best_intent
 
+# bruteforce method of finding intent
+# we iterate through all the intents, 
+# creating one single object for each one.
+# we then calculate the scores for each, 
+# based on trigger and pre-filled values. 
 def intent_scorer(user_input):
     """
-    Returns a sorted list of tuples of (scores_of_intent, intent)
+    input:
+        user_input:
+            The user input text to process.
+
+    return:
+        A sorted list of tuples of (scores_of_intent, intent)
+    
+    
     TIME COMPLEXITY: O(N*M + NlogN)
     WHERE: 
         N = NUMBER OF INTENTS
@@ -102,7 +110,7 @@ def intent_scorer(user_input):
 
         scored_intents.append((score, class_name))
 
-    # acts as key for the sorting
+    # the score acts as key for the sorting
     def scoring_function(item):
         return item[0]
 
@@ -111,8 +119,22 @@ def intent_scorer(user_input):
 
 def intent_resetter(best_intent=None, super_intent=None):
     """
-    if there is a best intent given, resets all but the best
+    If there is a best intent given, resets all but the best
     else, resets all.
+
+    In case of super_intents, we definitely have a best_intent.
+    We iterate through the intent list, and reset all except
+    the best_intent and super_intent.
+
+    inputs:
+        best_intent: 
+            the best scoring intent
+        super_intent:
+            the important intent that triggers confirmation, 
+            and thus this function.
+    
+    return:
+        None
     """
 
     if best_intent:
@@ -126,3 +148,5 @@ def intent_resetter(best_intent=None, super_intent=None):
         for intent in intent_list:
             intent_class = getattr(intents, intent)()
             intent_class.reset()
+
+    return
