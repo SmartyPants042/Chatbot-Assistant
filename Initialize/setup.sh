@@ -4,7 +4,7 @@
 # # go to the profile
 # ~/.$shell_name
 # # add this
-# export PYTHONPATH="${PYTHONPATH}:/path/to/this/directory"
+# export PYTHONPATH="${PYTHONPATH}:/path/to/the/base/directory"
 
 # # INSTALLING DEPENDENCIES
 # pip3 install -r requirements.txt
