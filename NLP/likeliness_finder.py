@@ -119,7 +119,7 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
     # returns the score for determining 
     # whether this intent should be filled or not
 
-    print("filter: ", filtered_words)
+    # print("filter: ", filtered_words)
 
     return score
 
