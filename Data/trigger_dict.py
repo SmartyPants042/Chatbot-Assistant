@@ -1,3 +1,8 @@
+# For multiple words to be present in a trigger,
+# separate them with whitespaces.
+# eg: "stocks show" will mean that both need to be present
+# in the user_input for accepting this intent.
+
 trigger_dict = {
     'basic_hello': [
         'hey',
@@ -54,4 +59,8 @@ trigger_dict = {
         'reminder',
     ],
 
+    'stock_display': [
+        'show',
+        'display'
+    ]
 }

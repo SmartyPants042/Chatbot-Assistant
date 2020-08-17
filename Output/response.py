@@ -7,6 +7,7 @@ from Output.basic_response import basic_response
 def response(intent, importance_threshold=0):
     """
     Gives the generic, built in response.
+    
     input:
         intent:
             the intent object which we have to respond

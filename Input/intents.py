@@ -93,3 +93,22 @@ class reminder(Intent):
             params=reminder.params,
             importance=0,
         )
+
+# Yet to make 'stock' Abstract Base Class
+class stock_display(Intent):
+    name = 'stock_display'
+    triggers = triggers[name]
+    params = [
+        param('ticker', "company ticker/name"),
+        param('date_time', 'time-from'),
+        param('date_time', 'time-to'),
+    ]
+
+    def __init__(self):
+        Intent.__init__(
+            self, 
+            name=stock_display.name, 
+            triggers=stock_display.triggers,
+            params=stock_display.params,
+            importance=0,
+        )

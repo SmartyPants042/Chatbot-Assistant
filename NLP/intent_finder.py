@@ -93,8 +93,11 @@ def intent_scorer(user_input):
         # of the class names
         assert(type(intent) == str)
 
-        # getting the classes one by one
-        class_name = getattr(intents, intent)()
+        try:
+            # getting the classes one by one
+            class_name = getattr(intents, intent)()
+        except:
+            print(f"Can't find class definition for the intent {intent}!")
 
         # how likely is that the user meant this intent
         # likeliness_finder also fills in the 

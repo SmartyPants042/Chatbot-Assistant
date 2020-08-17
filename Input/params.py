@@ -4,6 +4,11 @@ class name():
         self.value = None
         self.POS = 'NN'
 
+class ticker():
+    def __init__(self, called_by='ticker'):
+        self.called_by = called_by
+        self.value = None
+        self.POS = 'NNP'
 
 class date_time():
     def __init__(self, called_by='date/time'):

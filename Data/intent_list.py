@@ -5,4 +5,5 @@ intent_list = [
     'basic_challenge',
     'basic_bye',
     'reminder',
+    'stock_display',
 ]

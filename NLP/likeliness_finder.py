@@ -5,6 +5,8 @@ from Output.ask import ask
 
 def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
     """
+    checks how likely is this given intent the intent of the user. 
+
     input: 
         user_input:
             user's current text input
@@ -67,7 +69,7 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
     ]
 
     #################### BASE CASE OF THIS FUNCTION #####################
-    # Picks what to store in the parameter values.
+    # Given a parameter to store the value in
     # IMMEDIATE WORK NEEDED. 
     # THIS IS THE LAST STAGE OF THE BOT RESPONSE,
     # before it goes on to the next main loop iteration.
@@ -96,7 +98,7 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
         temp_num_triggers = 0
         for word in list_trigger_words:
             # comparing with the FILTERED INPUT
-            # if word found, great!
+            # if word found, we increase the words counter
             if word in filtered_words:
                 temp_num_triggers += 1
         
@@ -116,11 +118,11 @@ def likeliness_finder(user_input, intent, trigger_threshold=1, param=None):
     #################### FINDING THE PRE-FILLED PARAMETERS ####################
     # IMMEDIATE WORK NEEDED
     # pass for now
-    # returns the score for determining 
+    for params in intent.params:
+        pass
+    
+    # returns the score that determines 
     # whether this intent should be filled or not
-
-    # print("filter: ", filtered_words)
-
     return score
 
     #################### ASKING FOR THE NEW PARAMETERS ####################
